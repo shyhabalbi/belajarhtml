@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./style/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./style/datatables.min.css">
+
+
+    <script type="text/javascript" src="./script/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="./style/js/bootstrap.js"></script>
+    <script type="text/javascript" src="./script/datatables.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    Lembaran Pegawai
+    <br>
+    <button id="idBtnCreateNew" class="btn btn-primary">Create New</button>
+    <br>
+    <!-- disini bagian tablenya -->
+    <div class="table-responsive">
+        <table id="idTblPegawai" class="table table-responsive">
+            <thead>
+                <tr>
+                    <td>No</td>
+                    <td>Nama</td>
+                    <td>Alamat</td>
+                    <td>Jenis Kelamin</td>
+                    <td>Kota</td>
+                    <td>Email</td>
+                    <td>Action</td>
+                </tr>
+            </thead>
+            <tbody id="idTbodyPegawai">
+
+            </tbody>
+        </table>
+    </div>
+
+    <div id="idMdlEditPegawai" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+           
+            <div id="idMdlBodyEditPegawai" class="modal-body">
+                <!-- akan ada injeksi string ke bagian body ini -->
+            </div>
+            
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+
+    <script>
+        var vDataPegawai = [
+            {'Nama':'Fullan','Alamat':'JlBeoNo.5', 'Jns':true,'Kota':'Bekasi','Email':'fullan@fullan.com'},
+            {'Nama':'Paiman','Alamat':'JlAnggrekNo.20', 'Jns':true,'Kota':'Tanggerang','Email':'fullan@fullan.com'},
+            {'Nama':'Paijo','Alamat':'JlMawarNo.35', 'Jns':false,'Kota':'Bandung','Email':'fullan@fullan.com'},
+        ];
+        $(document).ready(function () {
+            var vJahitHtml ='';
+            
+            $.each(vDataPegawai, function (index, data) {
+                var vJns = '';
+                if (data.Jns==true) {
+                    vJns = 'Laki - laki';
+                } else {
+                    vJns = 'Perempuan';
+                }
+                vJahitHtml = vJahitHtml +   '<tr>'+
+                                        '<td>' +
+                                            (index+1) +
+                                        '</td>' +
+                                        '<td>' +
+                                            data.Nama +
+                                        '</td>' +
+                                        '<td>' +
+                                            data.Alamat +
+                                        '</td>' +
+                                        '<td>' +
+                                            vJns +
+                                        '</td>' +
+                                        '<td>' +
+                                            data.Kota+
+                                        '</td>' +
+                                        '<td>' +
+                                            data.Email+
+                                        '</td>' +
+                                        '<td>' +
+                                            '<button class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button> &nbsp'+
+                                            '<button  class="btn btn-warning clBtnEditPegawai" data='+ JSON.stringify(data) +' ><span class="glyphicon glyphicon-pencil"></span></button> &nbsp'+
+                                            '<button class="btn btn-danger"><span class=" glyphicon glyphicon-trash"></span>&nbsp Delete</button> &nbsp'+
+                                        '</td>' +    
+                                    '</tr>';
+                                   
+
+            });
+            // disini untuk append
+
+            $('#idTbodyPegawai').append(vJahitHtml);
+            $('#idTblPegawai').DataTable();
+
+            $('#idBtnCreateNew').click(function () {
+                debugger;
+            });
+
+            $('.clBtnEditPegawai').click(function () {
+                $('#idMdlBodyEditPegawai').empty();
+                var vData = JSON.parse($(this).attr('data'));
+                var strHtml2='<form>' +
+                          '<div class="form-group"> '+
+                          '  <label for="Nama">Nama Pegawai</label> '+
+                          '  <input type="text" class="form-control" id="idNamaPegawai" placeholder="Nama"> ' +
+                          '</div> '+
+                          '<div class="form-group"> '+
+                      '      <label for="Alamat">Alamat</label> '+
+                      '      <input type="text" class="form-control" id="idAlamatPegawai" placeholder="Alamat">'+
+                      '    </div>'+
+                     
+                      
+                      '    <button type="submit" class="btn btn-default">Submit</button>'+
+                      '  </form>';
+                      
+                $('#idMdlBodyEditPegawai').append(strHtml2);
+                debugger;
+                $('#idNamaPegawai').val(vData.Nama);
+                $('#idAlamatPegawai').val(vData.Alamat);
+                $('#idMdlEditPegawai').modal('show');      
+            });
+
+        });
+
+    </script>
+</body>
+
+</html>
